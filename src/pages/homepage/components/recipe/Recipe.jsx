@@ -1,11 +1,29 @@
-import { useState } from "react";
+import { useContext } from "react";
 import styles from "./Recipe.module.scss";
+import { ApiContext } from "../../../../context/ApiContext";
 
-function Recipe({ recipe }) {
-  const [liked, setLiked] = useState(false);
+function Recipe({ recipe, toogleLiked }) {
+  const BASE_API_URL = useContext(ApiContext)
 
-  function handleClick() {
-    setLiked(!liked);
+  async function handleClick() {
+    try {
+      const response = await fetch(`${BASE_API_URL}/${recipe._id}`, {
+        method: 'PATCH', 
+        headers: {
+          'Content-Type' : 'application/json'
+        }, 
+        body: JSON.stringify({
+          liked : !recipe.liked
+        })
+      })
+
+      if (response.ok) {
+        const res = await response.json(); 
+        toogleLiked(res);
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
@@ -19,7 +37,7 @@ function Recipe({ recipe }) {
       >
         <h3 className="mb-10">{recipe.title}</h3>
         <span
-          className={`material-symbols-outlined ${liked ? "text-primary" : ""}`}
+          className={`material-symbols-outlined ${recipe.liked ? "text-primary" : ""}`}
         >
           favorite
         </span>

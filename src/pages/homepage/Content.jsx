@@ -9,6 +9,7 @@ function Content() {
   const [recipes, setRecipes] = useState([]);
   const [filter, setFilter] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
   const BASE_API_URL = useContext(ApiContext);
 
   useEffect(() => {
@@ -16,16 +17,16 @@ function Content() {
     async function fetchAll() {
       try {
         setIsLoading(true);
-        const response = await fetch(BASE_API_URL);
+        const response = await fetch(
+          `${BASE_API_URL}?skip=${(page - 1) * 18}&limit=18`,
+        );
 
         if (response.ok) {
           if (!ignore) {
-            let content = await response.json();
-
-            if (!Array.isArray(content)) {
-              content = [content];
-            }
-            setRecipes(content);
+            const recipe = await response.json();
+            setRecipes((x) =>
+              Array.isArray(recipe) ? [...x, ...recipe] : [...x, recipe],
+            );
           }
         } else {
           console.error("Oups ! Une erreur est survenue");
@@ -41,11 +42,18 @@ function Content() {
     return () => {
       ignore = true;
     };
-  }, [BASE_API_URL]);
+  }, [BASE_API_URL, page]);
 
   function handleInput(e) {
     const filter = e.target.value;
     setFilter(filter.trim().toLowerCase());
+  }
+
+  // update recipes
+  function update(recipeUpdated) {
+    setRecipes(
+      recipes.map((r) => (r._id === recipeUpdated._id ? recipeUpdated : r)),
+    );
   }
 
   return (
@@ -74,10 +82,16 @@ function Content() {
             {recipes
               .filter((r) => r.title.toLowerCase().startsWith(filter))
               .map((r) => (
-                <Recipe key={r._id} recipe={r} />
+                <Recipe key={r._id} recipe={r} toogleLiked={update} />
               ))}
           </div>
         )}
+
+        <div className="flex-row-center p-20">
+          <button onClick={() => setPage(page + 1)} className="btn btn-primary">
+            Charger plus de recette
+          </button>
+        </div>
       </div>
     </div>
   );
