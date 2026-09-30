@@ -75,7 +75,7 @@ function Content() {
           />
         </div>
 
-        {isLoading ? (
+        {isLoading && !recipes.length ? (
           <Loading />
         ) : (
           <div className={`${styles.grid}`}>
