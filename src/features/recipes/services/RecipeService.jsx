@@ -14,7 +14,6 @@ export async function getRecipe(id) {
   return apiFetch(`/recipes/${id}`);
 }
 
-
 // Create new recipe
 export async function createRecipe(recipe) {
   return apiFetch("/recipes", {
@@ -22,7 +21,6 @@ export async function createRecipe(recipe) {
     body: JSON.stringify(recipe),
   });
 }
-
 
 // Delete recipe
 export async function deleteRecipe(id) {

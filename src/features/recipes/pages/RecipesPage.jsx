@@ -1,48 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./RecipesPage.module.scss";
 import Recipe from "../components/Recipe";
 import Loading from "../../../components/ui/Loading";
-import { ApiContext } from "../../../context/ApiContext";
+import { useRecipes } from "../hooks/useRecipes";
+
+const PAGE_SIZE = 18;
 
 function RecipesPage() {
   // const recipes = data;
-  const [recipes, setRecipes] = useState([]);
   const [filter, setFilter] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const BASE_API_URL = useContext(ApiContext);
-
-  useEffect(() => {
-    let ignore = false;
-    async function fetchAll() {
-      try {
-        setIsLoading(true);
-        const response = await fetch(
-          `${BASE_API_URL}?skip=${(page - 1) * 18}&limit=18`,
-        );
-
-        if (response.ok) {
-          if (!ignore) {
-            const recipe = await response.json();
-            setRecipes((x) =>
-              Array.isArray(recipe) ? [...x, ...recipe] : [...x, recipe],
-            );
-          }
-        } else {
-          console.error("Oups ! Une erreur est survenue");
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchAll();
-    return () => {
-      ignore = true;
-    };
-  }, [BASE_API_URL, page]);
+  const { recipes, setRecipes, isLoading } = useRecipes(page, PAGE_SIZE);
 
   function handleInput(e) {
     const filter = e.target.value;

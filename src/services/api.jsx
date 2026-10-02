@@ -4,7 +4,8 @@ export async function apiFetch(endpoint, options = {}) {
   const response = await fetch(`${BASE_API_URL}${endpoint}`, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      // Only send Content-Type when there is a body: on a GET it triggers a CORS preflight
+      ...(options.body && { "Content-Type": "application/json" }),
       ...options.headers,
     },
   });
