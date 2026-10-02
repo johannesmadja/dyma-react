@@ -7,7 +7,6 @@ import { useRecipes } from "../hooks/useRecipes";
 const PAGE_SIZE = 18;
 
 function RecipesPage() {
-  // const recipes = data;
   const [filter, setFilter] = useState("");
   const [page, setPage] = useState(1);
   const { recipes, setRecipes, isLoading } = useRecipes(page, PAGE_SIZE);
