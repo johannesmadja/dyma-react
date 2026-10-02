@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import styles from "./Content.module.scss";
-import Recipe from "./components/recipe/Recipe";
-import Loading from "../../components/loading/Loading";
-import { ApiContext } from "../../context/ApiContext";
+import styles from "./RecipesPage.module.scss";
+import Recipe from "../components/Recipe";
+import Loading from "../../../components/ui/Loading";
+import { ApiContext } from "../../../context/ApiContext";
 
-function Content() {
+function RecipesPage() {
   // const recipes = data;
   const [recipes, setRecipes] = useState([]);
   const [filter, setFilter] = useState("");
@@ -97,4 +97,4 @@ function Content() {
   );
 }
 
-export default Content;
+export default RecipesPage;
