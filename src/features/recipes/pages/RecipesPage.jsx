@@ -3,6 +3,7 @@ import styles from "./RecipesPage.module.scss";
 import Recipe from "../components/Recipe";
 import Loading from "../../../components/ui/Loading";
 import { useRecipes } from "../hooks/useRecipes";
+import SearchBar from "../../../components/ui/SearchBar";
 
 const PAGE_SIZE = 18;
 
@@ -11,15 +12,17 @@ function RecipesPage() {
   const [page, setPage] = useState(1);
   const { recipes, setRecipes, isLoading } = useRecipes(page, PAGE_SIZE);
 
-  function handleInput(e) {
-    const filter = e.target.value;
-    setFilter(filter.trim().toLowerCase());
-  }
-
   // update recipes
   function update(recipeUpdated) {
     setRecipes(
       recipes.map((r) => (r._id === recipeUpdated._id ? recipeUpdated : r)),
+    );
+  }
+
+  // update recipes
+  function remove(id) {  
+    setRecipes(
+      recipes.filter((r) => r._id !== id),
     );
   }
 
@@ -30,17 +33,7 @@ function RecipesPage() {
       <div
         className={`p-20 flex-fill d-flex flex-column card ${styles.contentCard} `}
       >
-        <div
-          className={`d-flex flex-row justify-content-center align-item-center my-30 ${styles.searchBar}`}
-        >
-          <span className="material-symbols-outlined mr-15">search</span>
-          <input
-            onInput={handleInput}
-            className="flex-fill"
-            type="text"
-            placeholder="Rechercher"
-          />
-        </div>
+        <SearchBar setFilter={setFilter} />
 
         {isLoading && !recipes.length ? (
           <Loading />
@@ -49,7 +42,7 @@ function RecipesPage() {
             {recipes
               .filter((r) => r.title.toLowerCase().startsWith(filter))
               .map((r) => (
-                <Recipe key={r._id} recipe={r} toogleLiked={update} />
+                <Recipe key={r._id} recipe={r} toogleLiked={update} removeRecipe={() => remove(r._id)} />
               ))}
           </div>
         )}

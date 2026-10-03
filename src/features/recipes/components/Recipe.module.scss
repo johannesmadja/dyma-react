@@ -1,4 +1,5 @@
 .recipe {
+  position: relative;
   border-radius: 20px;
   height: 500px;
     overflow: hidden;
@@ -30,4 +31,18 @@
   border: 1px solid var(--gray-2);
 //   border-bottom-left-radius: 20px;
 //   border-bottom-right-radius: 20px;
+}
+
+.close {
+  font-size: 25;
+  z-index: 1;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  color: white;
+  transition: color 0.2s;
+
+  &:hover {
+    color: red;
+  }
 }

@@ -3,9 +3,7 @@ import { apiFetch } from "../../../services/api";
 // Get paginate recipes
 export async function getAllDatas(pageIndex, pageSize) {
   const skip = (pageIndex - 1) * pageSize;
-
   const data = await apiFetch(`/recipes?skip=${skip}&limit=${pageSize}`);
-
   return Array.isArray(data) ? data : [data];
 }
 
