@@ -2,8 +2,12 @@ import { apiFetch } from "../../../services/api";
 
 // Get paginate recipes
 export async function getAllDatas(pageIndex, pageSize) {
-  const skip = (pageIndex - 1) * pageSize;
-  const data = await apiFetch(`/recipes?skip=${skip}&limit=${pageSize}`);
+  const queryParams = new URLSearchParams();
+  queryParams.append("skip", (pageIndex - 1) * pageSize);
+  queryParams.append("limit", pageSize);
+  queryParams.append("sort", "createdAt:-1");
+
+  const data = await apiFetch(`/recipes?${queryParams}`);
   return Array.isArray(data) ? data : [data];
 }
 
