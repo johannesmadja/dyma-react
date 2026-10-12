@@ -12,8 +12,8 @@ function App() {
     <>
       <div className={`d-flex flex-column ${styles.appContainer}`}>
         <Header />
-        <div className="flex-fill">
-          <Suspense fallback={<h2>Chargement ...</h2>}>
+        <div className="flex-fill d-flex flex-column">
+          <Suspense fallback={<h2> Chargment ...</h2>}>
             <Outlet />
           </Suspense>
         </div>

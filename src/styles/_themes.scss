@@ -29,3 +29,9 @@
 .text-primary {
   color: var(--primary);
 }
+
+.btn-danger {
+  background-color: var(--red-1);
+  color: white;
+  border: 2px solid var(--red-1);
+}

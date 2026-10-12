@@ -2,12 +2,18 @@ import { apiFetch } from "../../../services/api";
 
 // Get paginate recipes
 export async function getAllDatas(pageIndex, pageSize) {
-  const queryParams = new URLSearchParams();
-  queryParams.append("skip", (pageIndex - 1) * pageSize);
-  queryParams.append("limit", pageSize);
-  queryParams.append("sort", "createdAt:-1");
+  let url = "/recipes";
 
-  const data = await apiFetch(`/recipes?${queryParams}`);
+  if (pageIndex && pageSize) {
+    const queryParams = new URLSearchParams();
+    queryParams.append("skip", (pageIndex - 1) * pageSize);
+    queryParams.append("limit", pageSize);
+    queryParams.append("sort", "createdAt:-1");
+
+    url = `/recipes?${queryParams}`;
+  }
+
+  const data = await apiFetch(url);
   return Array.isArray(data) ? data : [data];
 }
 
@@ -26,8 +32,8 @@ export async function createRecipe(recipe) {
 
 // Update recipes
 export async function upadateRecipes(recipe) {
-  const {_id, ...restRecipe} = recipe;
-   return apiFetch(`/recipes/${_id}`, {
+  const { _id, ...restRecipe } = recipe;
+  return apiFetch(`/recipes/${_id}`, {
     method: "PATCH",
     body: JSON.stringify(restRecipe),
   });
