@@ -1,27 +1,13 @@
-import { useContext } from "react";
 import styles from "./Recipe.module.scss";
-import { ApiContext } from "../../../context/ApiContext";
 import { deleteRecipe } from "../services/RecipeService";
 
 function Recipe({ recipe, toogleLiked, removeRecipe }) {
-  const BASE_API_URL = useContext(ApiContext);
 
   async function handleClickLike() {
+    const updatedRecipe = {...recipe, liked: !recipe.liked}; 
     try {
-      const response = await fetch(`${BASE_API_URL}/${recipe._id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          liked: !recipe.liked,
-        }),
-      });
-
-      if (response.ok) {
-        const res = await response.json();
-        toogleLiked(res);
-      }
+      const response = await updatedRecipe(updatedRecipe);
+      toogleLiked(response);
     } catch (error) {
       console.error(error);
     }

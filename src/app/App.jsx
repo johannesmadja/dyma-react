@@ -2,21 +2,21 @@ import styles from "./App.module.scss";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
 // import { seeds } from "../features/recipes/data/seeds";
-import RecipesPage from "../features/recipes/pages/RecipesPage";
-import { useState } from "react";
-import Admin from "../features/admin/pages/Admin";
+import { Outlet } from "react-router";
+import { Suspense } from "react";
 
 // seeds();
 
 function App() {
-  const [page, setPage] = useState("homepage");
-
   return (
     <>
       <div className={`d-flex flex-column ${styles.appContainer}`}>
-        <Header setPage={setPage} />
-        {page === "homepage" && <RecipesPage />}
-        {page === "admin" && <Admin />}
+        <Header />
+        <div className="flex-fill">
+          <Suspense fallback={<h2>Chargement ...</h2>}>
+            <Outlet />
+          </Suspense>
+        </div>
         <Footer />
       </div>
     </>

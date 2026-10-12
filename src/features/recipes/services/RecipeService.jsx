@@ -24,6 +24,15 @@ export async function createRecipe(recipe) {
   });
 }
 
+// Update recipes
+export async function upadateRecipes(recipe) {
+  const {_id, ...restRecipe} = recipe;
+   return apiFetch(`/recipes/${_id}`, {
+    method: "PATCH",
+    body: JSON.stringify(restRecipe),
+  });
+}
+
 // Delete recipe
 export async function deleteRecipe(id) {
   return apiFetch(`/recipes/${id}`, {

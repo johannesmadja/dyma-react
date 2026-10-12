@@ -1,10 +1,10 @@
-import styles from "./RecipeForm.module.scss";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
+import styles from "./AdminRecipeForm.module.scss";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { createRecipe } from "../../recipes/services/RecipeService";
+import { useForm } from "react-hook-form";
+import { createRecipe } from "../../../../recipes/services/RecipeService";
+import * as yup from "yup";
 
-function RecipeForm() {
+function AdminRecipeForm() {
   const defaultValues = {
     title: "",
     image: "",
@@ -74,4 +74,4 @@ function RecipeForm() {
   );
 }
 
-export default RecipeForm;
+export default AdminRecipeForm;
