@@ -8,7 +8,7 @@ function AdminRecipeList() {
   async function deleteR(recipeId) {
     try {
       await deleteRecipe(recipeId);
-      setRecipes(recipes.filter((r) => r.id != recipeId));
+      setRecipes(recipes.filter((r) => r._id != recipeId));
     } catch (error) {
       console.error(error);
     }
