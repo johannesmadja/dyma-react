@@ -2,6 +2,7 @@ import { useState } from "react";
 import styles from "./RecipesPage.module.scss";
 import Recipe from "../components/Recipe";
 import { useRecipes } from "../hooks/useRecipes";
+import type { Recipe as RecipeType } from "../types";
 import Loading from "@/components/ui/Loading";
 import SearchBar from "@/components/ui/SearchBar";
 
@@ -13,7 +14,7 @@ function RecipesPage() {
   const { recipes, isLoading, error, hasMore, updateRecipe, deleteRecipe } =
     useRecipes(page, PAGE_SIZE);
 
-  async function handleToggleLike(recipe) {
+  async function handleToggleLike(recipe: RecipeType) {
     try {
       await updateRecipe({ _id: recipe._id, liked: !recipe.liked });
     } catch (error) {
@@ -21,7 +22,7 @@ function RecipesPage() {
     }
   }
 
-  async function handleDelete(id) {
+  async function handleDelete(id: string) {
     try {
       await deleteRecipe(id);
     } catch (error) {

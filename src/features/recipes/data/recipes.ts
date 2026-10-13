@@ -1,4 +1,6 @@
-export const recipes = [
+import type { Recipe } from "../types";
+
+export const recipes: Recipe[] = [
   {
     title: "Omelette au fromage",
     _id: "62a9f59ad7b1792b7e196f28",

@@ -7,6 +7,7 @@ import {
   createRecipe,
   updateRecipe,
 } from "@/features/recipes/services/recipeService";
+import type { Recipe } from "@/features/recipes/types";
 
 // Defined once, outside the component, so it is not rebuilt on every render
 const recipeSchema = yup.object({
@@ -18,12 +19,14 @@ const recipeSchema = yup.object({
   image: yup.string().required("L'image est obligatoire").url(),
 });
 
+type RecipeFormValues = yup.InferType<typeof recipeSchema>;
+
 function AdminRecipeFormPage() {
   // Provided by the route loader in edit mode, undefined in add mode
-  const recipe = useLoaderData();
+  const recipe: Recipe | undefined = useLoaderData();
   const navigate = useNavigate();
 
-  const defaultValues = {
+  const defaultValues: RecipeFormValues = {
     title: recipe ? recipe.title : "",
     image: recipe ? recipe.image : "",
   };
@@ -37,7 +40,7 @@ function AdminRecipeFormPage() {
     formState: { errors, isSubmitting },
   } = useForm({ defaultValues, resolver: yupResolver(recipeSchema) });
 
-  async function submit(values) {
+  async function submit(values: RecipeFormValues) {
     clearErrors();
     try {
       if (recipe) {
@@ -48,9 +51,10 @@ function AdminRecipeFormPage() {
         reset();
       }
     } catch (e) {
-      setError("generic", {
+      // "root.*" is the react-hook-form key for errors not tied to a field
+      setError("root.generic", {
         type: "generic",
-        message: `Une erreur est survenue : ${e.message}`,
+        message: `Une erreur est survenue : ${e instanceof Error ? e.message : e}`,
       });
     }
   }
@@ -80,7 +84,9 @@ function AdminRecipeFormPage() {
         {errors.image && <p className="form-error">{errors.image.message}</p>}
       </div>
 
-      {errors.generic && <p className="form-error">{errors.generic.message}</p>}
+      {errors.root?.generic && (
+        <p className="form-error">{errors.root.generic.message}</p>
+      )}
       <div>
         <button disabled={isSubmitting} className="btn btn-primary">
           Sauvegarder

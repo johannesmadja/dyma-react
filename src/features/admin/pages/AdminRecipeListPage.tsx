@@ -6,7 +6,7 @@ import styles from "./AdminRecipeListPage.module.scss";
 function AdminRecipeListPage() {
   const { recipes, isLoading, error, deleteRecipe } = useRecipes();
 
-  async function handleDelete(id) {
+  async function handleDelete(id: string) {
     try {
       await deleteRecipe(id);
     } catch (error) {

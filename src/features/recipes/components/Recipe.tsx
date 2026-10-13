@@ -1,7 +1,15 @@
+import type { MouseEvent } from "react";
 import styles from "./Recipe.module.scss";
+import type { Recipe as RecipeType } from "../types";
 
-function Recipe({ recipe, onToggleLike, onDelete }) {
-  function handleClickDelete(e) {
+interface RecipeProps {
+  recipe: RecipeType;
+  onToggleLike: () => void;
+  onDelete: () => void;
+}
+
+function Recipe({ recipe, onToggleLike, onDelete }: RecipeProps) {
+  function handleClickDelete(e: MouseEvent<HTMLSpanElement>) {
     e.stopPropagation();
     onDelete();
   }

@@ -1,12 +1,14 @@
+import type { ComponentType } from "react";
 import { createBrowserRouter, redirect } from "react-router";
 import App from "./App";
 import Loading from "@/components/ui/Loading";
 import { getRecipe } from "@/features/recipes/services/recipeService";
 
 // Lazy-load a page: the router downloads its code only when the route is visited
-const lazyPage = (importPage) => async () => ({
-  Component: (await importPage()).default,
-});
+const lazyPage =
+  (importPage: () => Promise<{ default: ComponentType }>) => async () => ({
+    Component: (await importPage()).default,
+  });
 
 export const ROUTER = createBrowserRouter([
   {
@@ -42,7 +44,8 @@ export const ROUTER = createBrowserRouter([
               },
               {
                 path: "edit/:recipeId",
-                loader: ({ params: { recipeId } }) => getRecipe(recipeId),
+                // recipeId is always defined here: it is part of the route path
+                loader: ({ params }) => getRecipe(params.recipeId!),
                 lazy: lazyPage(
                   () => import("@/features/admin/pages/AdminRecipeFormPage"),
                 ),
