@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import { useRecipes } from "../../../../recipes/hooks/useRecipes";
 import { deleteRecipe } from "../../../../recipes/services/RecipeService";
 import styles from "./AdminRecipeList.module.scss";
@@ -20,7 +21,9 @@ function AdminRecipeList() {
         ? recipes.map((r) => (
             <li key={r._id} className="d-flex align-items-center">
               <span className="flex-fill">{r.title}</span>
-              <button className="btn btn-primary mr-15">Editer</button>
+              <NavLink to={`../edit/${r._id}`}>
+                <button className="btn btn-primary mr-15">Editer</button>
+              </NavLink>
               <button onClick={() => deleteR(r._id)} className="btn btn-danger">
                 Supprimer
               </button>
