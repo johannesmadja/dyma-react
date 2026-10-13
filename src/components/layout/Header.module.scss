@@ -1,4 +1,4 @@
-@use '../../styles/mixins' as mixin;
+@use '@/styles/mixins' as mixin;
 
 .header {
     position: relative;
@@ -31,4 +31,9 @@
     @include mixin.xs {
         display: block !important;
     }
+}
+.overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
 }

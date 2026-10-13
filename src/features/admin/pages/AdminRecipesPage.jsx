@@ -1,21 +1,18 @@
-import { Suspense } from "react";
 import { Outlet } from "react-router";
-import AdminRecipesNav from "./components/AdminRecipeNav";
+import AdminRecipesNav from "../components/AdminRecipesNav";
 
-function AdminRecipes() {
+function AdminRecipesPage() {
   return (
     <div className="d-flex flex-column flex-fill">
       <h4 className="mb-20">Gestion des recettes</h4>
       <div className="flex-fill d-flex flex-column">
         <AdminRecipesNav />
         <div className="flex-fill d-flex flex-column">
-          <Suspense>
-            <Outlet />
-          </Suspense>
+          <Outlet />
         </div>
       </div>
     </div>
   );
 }
 
-export default AdminRecipes;
+export default AdminRecipesPage;

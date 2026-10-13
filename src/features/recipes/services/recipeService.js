@@ -1,7 +1,7 @@
-import { apiFetch } from "../../../services/api";
+import { apiFetch } from "@/services/api";
 
-// Get paginate recipes
-export async function getAllDatas(pageIndex, pageSize) {
+// Get recipes (paginated when pageIndex and pageSize are provided)
+export async function getRecipes(pageIndex, pageSize) {
   let url = "/recipes";
 
   if (pageIndex && pageSize) {
@@ -22,7 +22,7 @@ export async function getRecipe(id) {
   return apiFetch(`/recipes/${id}`);
 }
 
-// Create new recipe
+// Create new recipe(s)
 export async function createRecipe(recipe) {
   return apiFetch("/recipes", {
     method: "POST",
@@ -30,8 +30,8 @@ export async function createRecipe(recipe) {
   });
 }
 
-// Update recipes
-export async function upadateRecipes(recipe) {
+// Update recipe (only the provided fields are sent)
+export async function updateRecipe(recipe) {
   const { _id, ...restRecipe } = recipe;
   return apiFetch(`/recipes/${_id}`, {
     method: "PATCH",

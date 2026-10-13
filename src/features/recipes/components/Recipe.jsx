@@ -1,34 +1,15 @@
 import styles from "./Recipe.module.scss";
-import { deleteRecipe } from "../services/RecipeService";
 
-function Recipe({ recipe, toogleLiked, removeRecipe }) {
-
-  async function handleClickLike() {
-    const updatedRecipe = {...recipe, liked: !recipe.liked}; 
-    try {
-      const response = await updatedRecipe(updatedRecipe);
-      toogleLiked(response);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function handleClikDelete(e) {
+function Recipe({ recipe, onToggleLike, onDelete }) {
+  function handleClickDelete(e) {
     e.stopPropagation();
-
-    try {
-      await deleteRecipe(recipe._id);
-      removeRecipe();
-      
-    } catch (error) {
-      console.log(error);
-    }
+    onDelete();
   }
 
   return (
-    <div onClick={handleClickLike} className={styles.recipe}>
+    <div onClick={onToggleLike} className={styles.recipe}>
       <span
-        onClick={handleClikDelete}
+        onClick={handleClickDelete}
         className={`material-symbols-outlined ${styles.close}`}
       >
         close

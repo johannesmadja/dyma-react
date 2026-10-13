@@ -1,10 +1,12 @@
 import { NavLink } from "react-router";
 import styles from "./HeaderMenu.module.scss";
 
-function HeaderMenu() {
+function HeaderMenu({ onClose }) {
   return (
-    <ul className={`${styles.MenuContainer} card p-20`}>
-      <NavLink to="/admin"> Admin </NavLink>
+    <ul onClick={onClose} className={`${styles.MenuContainer} card p-20`}>
+      <li>
+        <NavLink to="/admin">Admin</NavLink>
+      </li>
       <li>Wishlist</li>
       <li>Connexion</li>
     </ul>

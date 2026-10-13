@@ -1,5 +1,5 @@
 import styles from "./Header.module.scss";
-import cookchef from "../../assets/images/cookchef.png";
+import cookchef from "@/assets/images/cookchef.png";
 import HeaderMenu from "./HeaderMenu";
 import { useState } from "react";
 import { NavLink } from "react-router";
@@ -16,7 +16,7 @@ function Header() {
         </NavLink>
       </div>
 
-      <ul className={styles.headerList}>
+      <nav className={styles.headerList}>
         <NavLink to="/admin" className="btn btn-primary mr-15">
           Admin
         </NavLink>
@@ -26,15 +26,18 @@ function Header() {
           Wishlist
         </button>
         <button className="btn btn-primary">Connexion</button>
-      </ul>
+      </nav>
 
-      <span className={`material-symbols-outlined ${styles.headerXs}`}>
+      <span
+        onClick={() => setShowMenu(true)}
+        className={`material-symbols-outlined ${styles.headerXs}`}
+      >
         menu
       </span>
       {showMenu && (
         <>
-          <div onClick={() => setShowMenu(false)} className="calc"></div>
-          <HeaderMenu />
+          <div onClick={() => setShowMenu(false)} className={styles.overlay}></div>
+          <HeaderMenu onClose={() => setShowMenu(false)} />
         </>
       )}
     </header>

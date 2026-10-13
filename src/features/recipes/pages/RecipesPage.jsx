@@ -1,29 +1,32 @@
 import { useState } from "react";
 import styles from "./RecipesPage.module.scss";
 import Recipe from "../components/Recipe";
-import Loading from "../../../components/ui/Loading";
 import { useRecipes } from "../hooks/useRecipes";
-import SearchBar from "../../../components/ui/SearchBar";
+import Loading from "@/components/ui/Loading";
+import SearchBar from "@/components/ui/SearchBar";
 
 const PAGE_SIZE = 18;
 
 function RecipesPage() {
   const [filter, setFilter] = useState("");
   const [page, setPage] = useState(1);
-  const { recipes, setRecipes, isLoading } = useRecipes(page, PAGE_SIZE);
+  const { recipes, isLoading, error, hasMore, updateRecipe, deleteRecipe } =
+    useRecipes(page, PAGE_SIZE);
 
-  // update recipes
-  function update(recipeUpdated) {
-    setRecipes(
-      recipes.map((r) => (r._id === recipeUpdated._id ? recipeUpdated : r)),
-    );
+  async function handleToggleLike(recipe) {
+    try {
+      await updateRecipe({ _id: recipe._id, liked: !recipe.liked });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  // update recipes
-  function remove(id) {  
-    setRecipes(
-      recipes.filter((r) => r._id !== id),
-    );
+  async function handleDelete(id) {
+    try {
+      await deleteRecipe(id);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -33,7 +36,11 @@ function RecipesPage() {
       <div
         className={`p-20 flex-fill d-flex flex-column card ${styles.contentCard} `}
       >
-        <SearchBar setFilter={setFilter} />
+        <SearchBar onSearch={(value) => setFilter(value.trim().toLowerCase())} />
+
+        {error && (
+          <p className="form-error">Impossible de charger les recettes.</p>
+        )}
 
         {isLoading && !recipes.length ? (
           <Loading />
@@ -42,16 +49,27 @@ function RecipesPage() {
             {recipes
               .filter((r) => r.title.toLowerCase().startsWith(filter))
               .map((r) => (
-                <Recipe key={r._id} recipe={r} toogleLiked={update} removeRecipe={() => remove(r._id)} />
+                <Recipe
+                  key={r._id}
+                  recipe={r}
+                  onToggleLike={() => handleToggleLike(r)}
+                  onDelete={() => handleDelete(r._id)}
+                />
               ))}
           </div>
         )}
 
-        <div className="flex-row-center p-20">
-          <button onClick={() => setPage(page + 1)} className="btn btn-primary">
-            Charger plus de recette
-          </button>
-        </div>
+        {hasMore && !error && (
+          <div className="flex-row-center p-20">
+            <button
+              onClick={() => setPage(page + 1)}
+              disabled={isLoading}
+              className="btn btn-primary"
+            >
+              Charger plus de recette
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
